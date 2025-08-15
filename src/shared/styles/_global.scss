@@ -1,0 +1,82 @@
+@use "@/shared/styles/vars" as *;
+
+.container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
+}
+#__nuxt {
+  overflow: hidden;
+}
+body {
+  background: var(--bg-color);
+  font-family: "Golos", sans-serif;
+  font-optical-sizing: auto;
+}
+.ymaps-2-1-79-gotoymaps {
+  display: none !important;
+}
+.ymaps-2-1-79-gototech {
+  display: none !important;
+}
+.ymaps-2-1-79-copyright {
+  display: none !important;
+}
+.ymaps-2-1-79-gototaxi {
+  display: none !important;
+}
+.input::placeholder {
+  opacity: 1;
+}
+.input:placeholder-shown {
+  text-transform: uppercase;
+  color: rgba(69, 64, 61, 0.3);
+  opacity: 1;
+
+  @media (max-width: $tab) {
+    font-size: 16px;
+    line-height: 16px;
+  }
+}
+.input {
+  outline: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--text-color);
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--text-color);
+  width: 100%;
+  @media (max-width: $tab) {
+    font-size: 16px;
+    line-height: 16px;
+    padding-bottom: 15px;
+  }
+}
+.skeleton {
+  background: linear-gradient(274deg, #e2e2e2, #c9c9c9);
+  background-size: 400% 400%;
+  position: relative;
+  overflow: hidden;
+  -webkit-animation: SkeletonAnimate 5s ease infinite;
+  -moz-animation: SkeletonAnimate 5s ease infinite;
+  -o-animation: SkeletonAnimate 5s ease infinite;
+  animation: SkeletonAnimate 5s ease infinite;
+}
+
+@keyframes SkeletonAnimate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "start": "NITRO_UNIX_SITE=$SOCKET node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
+    "@pinia/nuxt": "^0.10.1",
+    "@vueuse/head": "^2.0.0",
+    "@vueuse/motion": "^3.0.3",
+    "he": "^1.2.0",
+    "nuxt": "^3.16.1",
+    "pinia": "^3.0.1",
+    "sass": "^1.86.0",
+    "swiper": "^11.2.6",
+    "vue": "^3.5.13",
+    "vue-collapsed": "^1.3.4",
+    "vue-router": "^4.5.0",
+    "vue-the-mask": "^0.11.1"
+  }
+}

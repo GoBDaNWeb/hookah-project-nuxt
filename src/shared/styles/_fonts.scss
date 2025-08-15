@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Golos";
+  src: url("/fonts/GolosText-Regular.eot");
+  src: local("GolosRegular"),
+    url("/fonts/GolosText-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Golos";
+  src: local("GolosMedium"),
+    url("/fonts/GolosText-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
