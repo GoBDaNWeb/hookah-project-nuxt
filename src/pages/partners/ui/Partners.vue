@@ -31,7 +31,7 @@ const submitForm = async (name, phone) => {
     const response = await fetch("https://admin.кальяннадом.рф/send.php", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: JSON.stringify({
         name,
