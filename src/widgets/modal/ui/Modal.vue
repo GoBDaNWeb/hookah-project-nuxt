@@ -45,25 +45,19 @@ function buildText() {
 async function sendToTelegram() {
   const text = encodeURIComponent(buildText());
 
-  // 1) Пытаемся открыть приложение Telegram c предзаполненным текстом к @hookahtohome
   const deepLink = `tg://resolve?domain=hookahtohome&text=${text}`;
 
-  // 2) Фолбэки на веб
   const webChat = `https://web.telegram.org/k/#@hookahtohome`; // открыть чат
   const shareUrl = `https://t.me/share/url?text=${text}`; // окно «Поделиться»
   const profile = `https://t.me/hookahtohome`; // профиль
 
-  // Открытие должно происходить в результате user gesture (клик по кнопке)
   const started = Date.now();
   window.location.href = deepLink;
 
-  // Если приложение не подхватилось — пытаемся через share/web
   setTimeout(() => {
     if (Date.now() - started < 1500) {
-      // пробуем окно «Поделиться» (пользователь выберет чат и нажмёт «Отправить»)
       const win = window.open(shareUrl, "_blank");
       if (!win) {
-        // последний фолбэк — просто открыть чат/профиль
         window.open(webChat, "_blank") || window.open(profile, "_blank");
       }
     }
@@ -81,13 +75,6 @@ const onSubmit = async () => {
     console.error("Ошибка отправки формы:", error);
   }
 };
-
-// watch(
-//   () => props.currentTab,
-//   () => {
-//     swiperRef.value.slideTo(props.currentTab);
-//   }
-// );
 </script>
 
 <template>
