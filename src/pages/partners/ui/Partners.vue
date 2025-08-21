@@ -10,6 +10,44 @@ import { onMounted, ref, reactive, watch } from "vue";
 import he from "he";
 import { useModalStore } from "@/entities/modal-store";
 
+function buildText() {
+  const lines = [
+    "📝 Новая заявка с сайта",
+    formValues.username ? `Имя: ${formValues.username}` : "",
+    formValues.phoneValue ? `Телефон: ${formValues.phoneValue}` : "",
+    `Страница: ${window.location.href}`,
+  ].filter(Boolean);
+  return lines.join("\n");
+}
+
+async function sendToTelegram() {
+  const text = encodeURIComponent(buildText());
+
+  // 1) Пытаемся открыть приложение Telegram c предзаполненным текстом к @hookahtohome
+  const deepLink = `tg://resolve?domain=hookahtohome&text=${text}`;
+
+  // 2) Фолбэки на веб
+  const webChat = `https://web.telegram.org/k/#@hookahtohome`; // открыть чат
+  const shareUrl = `https://t.me/share/url?text=${text}`; // окно «Поделиться»
+  const profile = `https://t.me/hookahtohome`; // профиль
+
+  // Открытие должно происходить в результате user gesture (клик по кнопке)
+  const started = Date.now();
+  window.location.href = deepLink;
+
+  // Если приложение не подхватилось — пытаемся через share/web
+  setTimeout(() => {
+    if (Date.now() - started < 1500) {
+      // пробуем окно «Поделиться» (пользователь выберет чат и нажмёт «Отправить»)
+      const win = window.open(shareUrl, "_blank");
+      if (!win) {
+        // последний фолбэк — просто открыть чат/профиль
+        window.open(webChat, "_blank") || window.open(profile, "_blank");
+      }
+    }
+  }, 700);
+}
+
 const TheMask = process.client
   ? defineAsyncComponent(() => import("vue-the-mask"))
   : null;
@@ -26,22 +64,19 @@ const formValues = reactive({
   username: "",
   phoneValue: "",
 });
+
 const submitForm = async (name, phone) => {
   try {
-    const response = await fetch("https://admin.кальяннадом.рф/send.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: JSON.stringify({
-        name,
-        phone,
-      }),
-    });
+    // const response = await fetch("https://admin.кальяннадом.рф/send.php", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //   body: JSON.stringify({
+    //     name,
+    //     phone,
+    //   }),
+    // });
+    sendToTelegram();
     modal.handleOpenSuccessModal();
-    if (!response.ok) {
-      throw new Error("Network response was not ok", response);
-    }
   } catch (error) {
     console.error("Ошибка:", error);
   }
