@@ -20,37 +20,7 @@ const props = defineProps([
 const username = ref("");
 const phone = ref("");
 const modal = useModalStore();
-function buildText() {
-  const lines = [
-    "📝 Новая заявка с сайта",
-    username.value ? `Имя: ${username.value}` : "",
-    phone.value ? `Телефон: ${phone.value}` : "",
-    `Страница: ${window.location.href}`,
-  ].filter(Boolean);
-  return lines.join("\n");
-}
 
-async function sendToTelegram() {
-  const text = encodeURIComponent(buildText());
-
-  const deepLink = `tg://resolve?domain=hookahtohome&text=${text}`;
-
-  const webChat = `https://web.telegram.org/k/#@hookahtohome`; // открыть чат
-  const shareUrl = `https://t.me/share/url?text=${text}`; // окно «Поделиться»
-  const profile = `https://t.me/hookahtohome`; // профиль
-
-  const started = Date.now();
-  window.location.href = deepLink;
-
-  setTimeout(() => {
-    if (Date.now() - started < 1500) {
-      const win = window.open(shareUrl, "_blank");
-      if (!win) {
-        window.open(webChat, "_blank") || window.open(profile, "_blank");
-      }
-    }
-  }, 700);
-}
 const TheMask = process.client
   ? defineAsyncComponent(() => import("vue-the-mask"))
   : null;
@@ -72,23 +42,20 @@ const { data, error } = await useAsyncData("contacts-data", async () => {
 
 addressData.value = data.value.addressData;
 
-// Форма
-
 const onSubmit = async () => {
   if (!process.client) return;
 
   try {
-    // const response = await fetch(`https://admin.кальяннадом.рф/send.php`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    //   body: JSON.stringify({
-    //     name: username.value,
-    //     phone: phone.value,
-    //   }),
-    // });
+    const response = await fetch(`https://admin.кальяннадом.рф/send.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: JSON.stringify({
+        name: username.value,
+        phone: phone.value,
+      }),
+    });
 
-    // if (!response.ok) throw new Error("Ошибка сети");
-    sendToTelegram();
+    if (!response.ok) throw new Error("Ошибка сети");
     modal.handleOpenSuccessModal();
     username.value = "";
     phone.value = "";

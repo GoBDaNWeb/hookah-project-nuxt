@@ -10,38 +10,6 @@ import { onMounted, ref, reactive, watch } from "vue";
 import he from "he";
 import { useModalStore } from "@/entities/modal-store";
 
-function buildText() {
-  const lines = [
-    "📝 Новая заявка с сайта",
-    formValues.username ? `Имя: ${formValues.username}` : "",
-    formValues.phoneValue ? `Телефон: ${formValues.phoneValue}` : "",
-    `Страница: ${window.location.href}`,
-  ].filter(Boolean);
-  return lines.join("\n");
-}
-
-async function sendToTelegram() {
-  const text = encodeURIComponent(buildText());
-
-  const deepLink = `tg://resolve?domain=hookahtohome&text=${text}`;
-
-  const webChat = `https://web.telegram.org/k/#@hookahtohome`; // открыть чат
-  const shareUrl = `https://t.me/share/url?text=${text}`; // окно «Поделиться»
-  const profile = `https://t.me/hookahtohome`; // профиль
-
-  const started = Date.now();
-  window.location.href = deepLink;
-
-  setTimeout(() => {
-    if (Date.now() - started < 1500) {
-      const win = window.open(shareUrl, "_blank");
-      if (!win) {
-        window.open(webChat, "_blank") || window.open(profile, "_blank");
-      }
-    }
-  }, 700);
-}
-
 const TheMask = process.client
   ? defineAsyncComponent(() => import("vue-the-mask"))
   : null;
@@ -61,15 +29,14 @@ const formValues = reactive({
 
 const submitForm = async (name, phone) => {
   try {
-    // const response = await fetch("https://admin.кальяннадом.рф/send.php", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    //   body: JSON.stringify({
-    //     name,
-    //     phone,
-    //   }),
-    // });
-    sendToTelegram();
+    const response = await fetch("https://admin.кальяннадом.рф/send.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: JSON.stringify({
+        name,
+        phone,
+      }),
+    });
     modal.handleOpenSuccessModal();
   } catch (error) {
     console.error("Ошибка:", error);
